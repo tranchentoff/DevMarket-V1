@@ -1,0 +1,802 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DevMarket - Scripts, Programmes et Projets</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --kali-primary: #557CEC;
+            --kali-secondary: #000000;
+            --kali-accent: #00FF00;
+            --kali-bg-dark: #0c0c0c;
+            --kali-bg-light: #1a1a1a;
+            --kali-text-light: #FFFFFF;
+            --kali-text-dark: #222222;
+            --kali-card-dark: #161616;
+            --kali-card-light: #FFFFFF;
+            --kali-border: #2D2D2D;
+        }
+
+        .light-mode {
+            --kali-primary: #557CEC;
+            --kali-secondary: #F0F0F0;
+            --kali-accent: #008800;
+            --kali-bg-dark: #E0E0E0;
+            --kali-bg-light: #F5F5F5;
+            --kali-text-light: #222222;
+            --kali-text-dark: #333333;
+            --kali-card-dark: #FFFFFF;
+            --kali-card-light: #F8F8F8;
+            --kali-border: #CCCCCC;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            transition: background-color 0.3s, color 0.3s;
+        }
+
+        body {
+            font-family: 'Ubuntu Mono', monospace;
+            background-color: var(--kali-bg-dark);
+            color: var(--kali-text-light);
+            line-height: 1.6;
+            background-image: 
+                radial-gradient(circle at 10% 20%, rgba(85, 124, 236, 0.03) 0%, transparent 20%),
+                radial-gradient(circle at 90% 80%, rgba(0, 255, 0, 0.03) 0%, transparent 20%);
+        }
+
+        .light-mode body {
+            background-image: 
+                radial-gradient(circle at 10% 20%, rgba(85, 124, 236, 0.05) 0%, transparent 20%),
+                radial-gradient(circle at 90% 80%, rgba(0, 136, 0, 0.05) 0%, transparent 20%);
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        /* Header Styles */
+        header {
+            background-color: var(--kali-secondary);
+            padding: 15px 0;
+            border-bottom: 1px solid var(--kali-border);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .logo i {
+            color: var(--kali-primary);
+            font-size: 24px;
+        }
+
+        .logo-text {
+            font-weight: bold;
+            font-size: 22px;
+            background: linear-gradient(90deg, var(--kali-primary), var(--kali-accent));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .controls {
+            display: flex;
+            gap: 15px;
+            align-items: center;
+        }
+
+        .language-selector, .theme-toggle {
+            background-color: var(--kali-bg-light);
+            color: var(--kali-text-light);
+            border: 1px solid var(--kali-border);
+            border-radius: 4px;
+            padding: 8px 12px;
+            cursor: pointer;
+            font-family: 'Ubuntu Mono', monospace;
+        }
+
+        .theme-toggle {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 40px;
+            height: 40px;
+        }
+
+        /* Hero Section */
+        .hero {
+            padding: 60px 0;
+            text-align: center;
+            background: linear-gradient(to bottom, var(--kali-secondary), var(--kali-bg-dark));
+            border-bottom: 1px solid var(--kali-border);
+        }
+
+        .hero h1 {
+            font-size: 2.5rem;
+            margin-bottom: 20px;
+            background: linear-gradient(90deg, var(--kali-primary), var(--kali-accent));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .hero p {
+            max-width: 700px;
+            margin: 0 auto 30px;
+            color: var(--kali-text-light);
+            font-size: 1.1rem;
+        }
+
+        /* Products Grid */
+        .products-section {
+            padding: 60px 0;
+        }
+
+        .section-title {
+            text-align: center;
+            margin-bottom: 40px;
+            font-size: 2rem;
+            color: var(--kali-primary);
+        }
+
+        .products-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 30px;
+        }
+
+        .product-card {
+            background-color: var(--kali-card-dark);
+            border: 1px solid var(--kali-border);
+            border-radius: 8px;
+            overflow: hidden;
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+
+        .product-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+        }
+
+        .product-image {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+            border-bottom: 1px solid var(--kali-border);
+        }
+
+        .product-info {
+            padding: 20px;
+        }
+
+        .product-name {
+            font-size: 1.2rem;
+            margin-bottom: 10px;
+            color: var(--kali-primary);
+        }
+
+        .product-description {
+            color: var(--kali-text-light);
+            margin-bottom: 15px;
+            font-size: 0.9rem;
+        }
+
+        .product-price {
+            font-weight: bold;
+            color: var(--kali-accent);
+            margin-bottom: 15px;
+            font-size: 1.1rem;
+        }
+
+        .telegram-btn {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            width: 100%;
+            padding: 12px;
+            background: linear-gradient(90deg, var(--kali-primary), var(--kali-accent));
+            color: white;
+            text-align: center;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-family: 'Ubuntu Mono', monospace;
+            font-weight: bold;
+            text-decoration: none;
+        }
+
+        .telegram-btn:hover {
+            opacity: 0.9;
+        }
+
+        /* Categories */
+        .categories {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin-bottom: 30px;
+            flex-wrap: wrap;
+        }
+
+        .category-btn {
+            padding: 10px 20px;
+            background-color: var(--kali-bg-light);
+            color: var(--kali-text-light);
+            border: 1px solid var(--kali-border);
+            border-radius: 20px;
+            cursor: pointer;
+            font-family: 'Ubuntu Mono', monospace;
+        }
+
+        .category-btn.active {
+            background: linear-gradient(90deg, var(--kali-primary), var(--kali-accent));
+            color: white;
+        }
+
+        /* Footer */
+        footer {
+            background-color: var(--kali-secondary);
+            padding: 40px 0;
+            border-top: 1px solid var(--kali-border);
+            text-align: center;
+        }
+
+        .footer-content {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .footer-logo {
+            margin-bottom: 20px;
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: var(--kali-primary);
+        }
+
+        .footer-links {
+            display: flex;
+            gap: 20px;
+            margin-bottom: 20px;
+        }
+
+        .footer-link {
+            color: var(--kali-text-light);
+            text-decoration: none;
+        }
+
+        .footer-link:hover {
+            color: var(--kali-primary);
+        }
+
+        .copyright {
+            color: var(--kali-text-light);
+            font-size: 0.9rem;
+        }
+
+        /* Terminal effect */
+        .terminal-bar {
+            background-color: var(--kali-bg-light);
+            height: 25px;
+            border-top-left-radius: 5px;
+            border-top-right-radius: 5px;
+            display: flex;
+            align-items: center;
+            padding: 0 10px;
+        }
+
+        .terminal-button {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            margin-right: 5px;
+        }
+
+        .terminal-button.red { background-color: #ff5f56; }
+        .terminal-button.yellow { background-color: #ffbd2e; }
+        .terminal-button.green { background-color: #27c93f; }
+
+        .terminal-window {
+            background-color: var(--kali-card-dark);
+            border: 1px solid var(--kali-border);
+            border-radius: 5px;
+            margin-bottom: 30px;
+        }
+
+        .terminal-content {
+            padding: 15px;
+            font-family: 'Ubuntu Mono', monospace;
+        }
+
+        .terminal-command {
+            color: var(--kali-accent);
+        }
+
+        .terminal-result {
+            margin-top: 10px;
+            color: var(--kali-text-light);
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .header-content {
+                flex-direction: column;
+                gap: 15px;
+            }
+            
+            .products-grid {
+                grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            }
+            
+            .hero h1 {
+                font-size: 2rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .products-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .controls {
+                flex-wrap: wrap;
+                justify-content: center;
+            }
+            
+            .hero h1 {
+                font-size: 1.8rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="container">
+            <div class="header-content">
+                <div class="logo">
+                    <i class="fas fa-code"></i>
+                    <span class="logo-text">DevMarket</span>
+                </div>
+                <div class="controls">
+                    <select id="language-selector" class="language-selector">
+                        <option value="fr">Français</option>
+                        <option value="en">English</option>
+                        <option value="ar">العربية</option>
+                        <option value="ru">Русский</option>
+                    </select>
+                    <button id="theme-toggle" class="theme-toggle">
+                        <i class="fas fa-moon"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <section class="hero">
+        <div class="container">
+            <div class="terminal-window">
+                <div class="terminal-bar">
+                    <div class="terminal-button red"></div>
+                    <div class="terminal-button yellow"></div>
+                    <div class="terminal-button green"></div>
+                </div>
+                <div class="terminal-content">
+                    <div class="terminal-command">$ welcome --to "DevMarket"</div>
+                    <div class="terminal-result">> Bienvenue sur DevMarket - Votre marché de développeurs</div>
+                </div>
+            </div>
+            <h1>DevMarket - Scripts, Programmes & Projets</h1>
+            <p>Découvrez notre collection de scripts, programmes et projets de développement de qualité</p>
+        </div>
+    </section>
+
+    <section class="products-section">
+        <div class="container">
+            <h2 class="section-title" id="products-title">Nos Produits</h2>
+            
+            <div class="categories">
+                <button class="category-btn active" data-category="all">Tous</button>
+                <button class="category-btn" data-category="scripts">Scripts</button>
+                <button class="category-btn" data-category="web">Applications Web</button>
+                <button class="category-btn" data-category="mobile">Apps Mobiles</button>
+                <button class="category-btn" data-category="ai">IA & Machine Learning</button>
+            </div>
+            
+            <div class="products-grid" id="products-container">
+                <!-- Products will be generated by JavaScript -->
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-logo">DevMarket © 2025</div>
+                <div class="footer-links">
+                    <a href="#" class="footer-link">À propos</a>
+                    <a href="#" class="footer-link">Contact</a>
+                    <a href="#" class="footer-link">Politique de confidentialité</a>
+                    <a href="#" class="footer-link">Conditions d'utilisation</a>
+                </div>
+                <div class="copyright" id="copyright-text">© 2025 DevMarket. Tous droits réservés.</div>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Données des produits
+        const products = [
+            { 
+                id: 1, 
+                name: { 
+                    fr: "Système d'authentification", 
+                    en: "Authentication System", 
+                    ar: "نظام المصادقة", 
+                    ru: "Система аутентификации" 
+                }, 
+                description: {
+                    fr: "Système d'authentification sécurisé avec multi-facteurs",
+                    en: "Secure authentication system with multi-factor",
+                    ar: "نظام مصادقة آمن متعدد العوامل",
+                    ru: "Безопасная система аутентификации с многофакторностью"
+                },
+                price: {
+                    fr: "49,99 €",
+                    en: "$49.99",
+                    ar: "49.99 دولار",
+                    ru: "4990 руб"
+                },
+                category: "web",
+                image: "https://images.unsplash.com/photo-1563089145-599997674d42?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=870&q=80" 
+            },
+            { 
+                id: 2, 
+                name: { 
+                    fr: "Plateforme E-commerce", 
+                    en: "E-commerce Platform", 
+                    ar: "منصة التجارة الإلكترونية", 
+                    ru: "Платформа электронной коммерции" 
+                }, 
+                description: {
+                    fr: "Plateforme e-commerce complète avec panier et paiement",
+                    en: "Complete e-commerce platform with cart and payment",
+                    ar: "منصة تجارة إلكترونية كاملة مع سلة الدفع والدفع",
+                    ru: "Полная платформа электронной коммерции с корзиной и оплатой"
+                },
+                price: {
+                    fr: "99,99 €",
+                    en: "$99.99",
+                    ar: "99.99 دولار",
+                    ru: "9990 руб"
+                },
+                category: "web",
+                image: "https://images.unsplash.com/photo-1556742049-0cfed4f6a45d?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=870&q=80" 
+            },
+            { 
+                id: 3, 
+                name: { 
+                    fr: "API RESTful", 
+                    en: "RESTful API", 
+                    ar: "واجهة برمجة تطبيقات RESTful", 
+                    ru: "RESTful API" 
+                }, 
+                description: {
+                    fr: "API RESTful complète avec documentation Swagger",
+                    en: "Complete RESTful API with Swagger documentation",
+                    ar: "واجهة برمجة تطبيقات RESTful كاملة مع توثيق Swagger",
+                    ru: "Полное RESTful API с документацией Swagger"
+                },
+                price: {
+                    fr: "79,99 €",
+                    en: "$79.99",
+                    ar: "79.99 دولار",
+                    ru: "7990 руб"
+                },
+                category: "scripts",
+                image: "https://images.unsplash.com/photo-1547658719-da2b51169166?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=464&q=80" 
+            },
+            { 
+                id: 4, 
+                name: { 
+                    fr: "Application React Native", 
+                    en: "React Native App", 
+                    ar: "تطبيق React Native", 
+                    ru: "React Native приложение" 
+                }, 
+                description: {
+                    fr: "Application mobile multiplateforme avec React Native",
+                    en: "Cross-platform mobile application with React Native",
+                    ar: "تطبيق جوال متعدد المنصات مع React Native",
+                    ru: "Кроссплатформенное мобильное приложение на React Native"
+                },
+                price: {
+                    fr: "89,99 €",
+                    en: "$89.99",
+                    ar: "89.99 دولار",
+                    ru: "8990 руб"
+                },
+                category: "mobile",
+                image: "https://images.unsplash.com/photo-1633356122544-f134324a6cee?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=870&q=80" 
+            },
+            { 
+                id: 5, 
+                name: { 
+                    fr: "Dashboard Admin", 
+                    en: "Admin Dashboard", 
+                    ar: "لوحة تحكم المشرف", 
+                    ru: "Админ панель" 
+                }, 
+                description: {
+                    fr: "Dashboard administrateur avec graphiques et statistiques",
+                    en: "Admin dashboard with charts and statistics",
+                    ar: "لوحة تحكم المشرف مع الرسوم البيانية والإحصائيات",
+                    ru: "Админ панель с графиками и статистикой"
+                },
+                price: {
+                    fr: "69,99 €",
+                    en: "$69.99",
+                    ar: "69.99 دولار",
+                    ru: "6990 руб"
+                },
+                category: "web",
+                image: "https://images.unsplash.com/photo-1551288049-bebda4e38f71?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=870&q=80" 
+            },
+            { 
+                id: 6, 
+                name: { 
+                    fr: "Script de Sécurité", 
+                    en: "Security Script", 
+                    ar: "نص الأمان", 
+                    ru: "Скрипт безопасности" 
+                }, 
+                description: {
+                    fr: "Script de sécurité pour analyses et protection",
+                    en: "Security script for analysis and protection",
+                    ar: "نص الأمان للتحليل والحماية",
+                    ru: "Скрипт безопасности для анализа и защиты"
+                },
+                price: {
+                    fr: "59,99 €",
+                    en: "$59.99",
+                    ar: "59.99 دولار",
+                    ru: "5990 руб"
+                },
+                category: "scripts",
+                image: "https://images.unsplash.com/photo-1563013544-824ae1b704d3?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=870&q=80" 
+            },
+            { 
+                id: 7, 
+                name: { 
+                    fr: "Chatbot IA", 
+                    en: "AI Chatbot", 
+                    ar: "شات بوت الذكاء الاصطناعي", 
+                    ru: "AI Чатбот" 
+                }, 
+                description: {
+                    fr: "Chatbot intelligent avec technologie NLP",
+                    en: "Smart chatbot with NLP technology",
+                    ar: "شات بوت ذكي مع تقنية معالجة اللغة الطبيعية",
+                    ru: "Умный чатбот с технологией NLP"
+                },
+                price: {
+                    fr: "129,99 €",
+                    en: "$129.99",
+                    ar: "129.99 دولار",
+                    ru: "12990 руб"
+                },
+                category: "ai",
+                image: "https://images.unsplash.com/photo-1534723328310-e82dad3ee43f?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=870&q=80" 
+            },
+            { 
+                id: 8, 
+                name: { 
+                    fr: "Application de Gestion de Projet", 
+                    en: "Project Management App", 
+                    ar: "تطبيق إدارة المشاريع", 
+                    ru: "Приложение для управления проектами" 
+                }, 
+                description: {
+                    fr: "Application complète de gestion de projet en équipe",
+                    en: "Complete team project management application",
+                    ar: "تطبيق كامل لإدارة مشاريع الفريق",
+                    ru: "Полное приложение для управления командными проектами"
+                },
+                price: {
+                    fr: "149,99 €",
+                    en: "$149.99",
+                    ar: "149.99 دولار",
+                    ru: "14990 руб"
+                },
+                category: "mobile",
+                image: "https://images.unsplash.com/photo-1611224923853-80b023f02d71?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=869&q=80" 
+            }
+        ];
+
+        // Textes traduits
+        const translations = {
+            fr: {
+                headerTitle: "DevMarket",
+                productsTitle: "Nos Produits",
+                telegramButton: "Rejoindre le groupe Telegram",
+                footerText: "© 2025 DevMarket. Tous droits réservés.",
+                categories: {
+                    all: "Tous",
+                    scripts: "Scripts",
+                    web: "Applications Web",
+                    mobile: "Apps Mobiles",
+                    ai: "IA & Machine Learning"
+                }
+            },
+            en: {
+                headerTitle: "DevMarket",
+                productsTitle: "Our Products",
+                telegramButton: "Join Telegram Group",
+                footerText: "© 2025 DevMarket. All rights reserved.",
+                categories: {
+                    all: "All",
+                    scripts: "Scripts",
+                    web: "Web Applications",
+                    mobile: "Mobile Apps",
+                    ai: "AI & Machine Learning"
+                }
+            },
+            ar: {
+                headerTitle: "DevMarket",
+                productsTitle: "منتجاتنا",
+                telegramButton: "انضم إلى مجموعة Telegram",
+                footerText: "© 2025 DevMarket. جميع الحقوق محفوظة.",
+                categories: {
+                    all: "الكل",
+                    scripts: "النصوص البرمجية",
+                    web: "تطبيقات الويب",
+                    mobile: "تطبيقات الجوال",
+                    ai: "الذكاء الاصطناعي"
+                }
+            },
+            ru: {
+                headerTitle: "DevMarket",
+                productsTitle: "Наши продукты",
+                telegramButton: "Присоединиться к группе в Telegram",
+                footerText: "© 2025 DevMarket. Все права защищены.",
+                categories: {
+                    all: "Все",
+                    scripts: "Скрипты",
+                    web: "Веб-приложения",
+                    mobile: "Мобильные приложения",
+                    ai: "ИИ и машинное обучение"
+                }
+            }
+        };
+
+        // Éléments DOM
+        const languageSelector = document.getElementById('language-selector');
+        const themeToggle = document.getElementById('theme-toggle');
+        const productsContainer = document.getElementById('products-container');
+        const productsTitle = document.getElementById('products-title');
+        const copyrightText = document.getElementById('copyright-text');
+        const categoryButtons = document.querySelectorAll('.category-btn');
+
+        // Charger les préférences utilisateur
+        let currentLanguage = localStorage.getItem('language') || 'fr';
+        let isDarkMode = localStorage.getItem('darkMode') === 'true';
+        let currentCategory = 'all';
+
+        // Initialiser la page
+        function initializePage() {
+            // Appliquer la langue
+            languageSelector.value = currentLanguage;
+            updateLanguage(currentLanguage);
+
+            // Appliquer le thème
+            if (isDarkMode) {
+                document.body.classList.add('light-mode');
+                themeToggle.innerHTML = '<i class="fas fa-sun"></i>';
+            } else {
+                document.body.classList.remove('light-mode');
+                themeToggle.innerHTML = '<i class="fas fa-moon"></i>';
+            }
+
+            // Afficher les produits
+            renderProducts();
+            
+            // Ajouter les écouteurs d'événements pour les catégories
+            categoryButtons.forEach(button => {
+                button.addEventListener('click', () => {
+                    categoryButtons.forEach(btn => btn.classList.remove('active'));
+                    button.classList.add('active');
+                    currentCategory = button.getAttribute('data-category');
+                    renderProducts();
+                });
+            });
+        }
+
+        // Mettre à jour la langue
+        function updateLanguage(lang) {
+            currentLanguage = lang;
+            localStorage.setItem('language', lang);
+            
+            // Mettre à jour les textes de l'interface
+            productsTitle.textContent = translations[lang].productsTitle;
+            copyrightText.textContent = translations[lang].footerText;
+            
+            // Mettre à jour les catégories
+            categoryButtons.forEach(button => {
+                const category = button.getAttribute('data-category');
+                button.textContent = translations[lang].categories[category];
+            });
+            
+            // Regénérer les produits avec les nouvelles traductions
+            renderProducts();
+        }
+
+        // Afficher les produits
+        function renderProducts() {
+            productsContainer.innerHTML = '';
+            
+            const filteredProducts = currentCategory === 'all' 
+                ? products 
+                : products.filter(product => product.category === currentCategory);
+            
+            filteredProducts.forEach(product => {
+                const productCard = document.createElement('div');
+                productCard.className = 'product-card';
+                
+                productCard.innerHTML = `
+                    <img src="${product.image}" alt="${product.name[currentLanguage]}" class="product-image">
+                    <div class="product-info">
+                        <h3 class="product-name">${product.name[currentLanguage]}</h3>
+                        <p class="product-description">${product.description[currentLanguage]}</p>
+                        <div class="product-price">${product.price[currentLanguage]}</div>
+                        <a href="https://t.me/devmarket_oficial" class="telegram-btn" target="_blank">
+                            <i class="fab fa-telegram"></i> ${translations[currentLanguage].telegramButton}
+                        </a>
+                    </div>
+                `;
+                
+                productsContainer.appendChild(productCard);
+            });
+        }
+
+        // Changer de thème
+        function toggleTheme() {
+            isDarkMode = !isDarkMode;
+            localStorage.setItem('darkMode', isDarkMode);
+            
+            if (isDarkMode) {
+                document.body.classList.add('light-mode');
+                themeToggle.innerHTML = '<i class="fas fa-sun"></i>';
+            } else {
+                document.body.classList.remove('light-mode');
+                themeToggle.innerHTML = '<i class="fas fa-moon"></i>';
+            }
+        }
+
+        // Événements
+        languageSelector.addEventListener('change', (e) => {
+            updateLanguage(e.target.value);
+        });
+
+        themeToggle.addEventListener('click', toggleTheme);
+
+        // Initialiser la page au chargement
+        document.addEventListener('DOMContentLoaded', initializePage);
+    </script>
+</body>
+</html>
